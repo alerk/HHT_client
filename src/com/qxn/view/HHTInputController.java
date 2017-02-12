@@ -7,8 +7,9 @@ import javafx.scene.control.TextField;
 import com.qxn.MainApp;
 import com.qxn.connection.HHTConnection;
 import java.util.Hashtable;
+import com.qxn.interfaces.Callback;
 
-public class HHTInputController {
+public class HHTInputController implements Callback{
 	@FXML
 	private TextField txtIpAddr;
 	@FXML
@@ -78,7 +79,7 @@ public class HHTInputController {
 			System.out.println("Connect to " + txtIpAddr.getText() + ":" + txtInputPort.getText() + ":" + txtDisplayPort.getText());
 			hhtConn.connectToHHTGateway(txtIpAddr.getText(), Integer.parseInt(txtInputPort.getText()), Integer.parseInt(txtDisplayPort.getText()));
 			//TODO assign some callback pattern here, maybe Command pattern
-			//hhtConn.assignDisplayCallback();
+			hhtConn.registerDisplayCallback(this);
 		}
 	}
 	
@@ -223,6 +224,12 @@ public class HHTInputController {
 	private void buttonClicked(char keyCode){
 		//TODO: send to HHTConnection > HHTInputConnection
 		hhtConn.sendKey(keyCode);
+	}
+
+	@Override
+	public void execute(char[] arr) {
+		// TODO Auto-generated method stub
+		lblDisplay.setText(String.valueOf(arr));
 	}
 	
 

@@ -16,7 +16,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <GridPane alignment="CENTER" layoutX="29.0" layoutY="47.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0">
+                  <GridPane alignment="CENTER" layoutX="29.0" layoutY="47.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,6 +30,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -58,9 +59,12 @@
                         <Button fx:id="btnTwo" mnemonicParsing="false" onAction="#onBtnTwoClicked" text="2" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                         <Button fx:id="btnThree" mnemonicParsing="false" onAction="#onBtnThreeClicked" text="3" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                         <Button fx:id="btnZero" mnemonicParsing="false" onAction="#onBtnZeroClicked" text="0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <TextField fx:id="txtIpAddr" promptText="ip address" text="127.0.0.1" GridPane.rowIndex="9" />
-                        <Button fx:id="btnConnecti" mnemonicParsing="false" onAction="#onBtnConnectClicked" text="Connect" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-                        <TextField fx:id="txtPort" promptText="port" text="65001" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <TextField fx:id="txtIpAddr" promptText="ip address" text="192.168.237.230" GridPane.rowIndex="9" />
+                        <Button fx:id="btnConnecti" mnemonicParsing="false" onAction="#onBtnConnectClicked" text="Connect" GridPane.rowIndex="10" />
+                        <TextField fx:id="txtInputPort" promptText="port" text="65001" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <TextField fx:id="txtDisplayPort" text="65002" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+                        <Label text="Input port" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <Label text="Display port" GridPane.columnIndex="2" GridPane.rowIndex="10" />
                      </children>
                   </GridPane>
                </children>

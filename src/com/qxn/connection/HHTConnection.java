@@ -2,8 +2,10 @@ package com.qxn.connection;
 
 
 
+
 import com.qxn.connection.HHTInputConnection;
 import com.qxn.connection.HHTDisplayConnection;
+import com.qxn.interfaces.Callback;
 
 public class HHTConnection {
 	private HHTInputConnection inputConn;
@@ -41,6 +43,12 @@ public class HHTConnection {
 	public void sendKey(char keyCode) {
 		// TODO Send key to inputConn
 		inputConn.sendKey(keyCode);		
+	}
+
+	public void registerDisplayCallback(Callback callback) {
+		// TODO Auto-generated method stub
+		displayConn.registerCallback(callback);
+		
 	}
 
 }
