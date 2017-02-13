@@ -5,6 +5,8 @@ import java.io.IOException;
 import com.qxn.view.HHTInputController;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -15,6 +17,7 @@ public class MainApp extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	private ObservableList<String> displayData = FXCollections.observableArrayList();
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -39,7 +42,7 @@ public class MainApp extends Application {
 			//Show the scene containing the root layout
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
-			primaryStage.show();
+			primaryStage.show();			
 		} catch(IOException e) {
 			e.printStackTrace();
 		}		
@@ -58,8 +61,8 @@ public class MainApp extends Application {
 			rootLayout.setCenter(hhtInput);
 			
 			//Give the controller access to the main app			
-//			HHTInputController controller = loader.getController();
-//			controller.setMainApp(this);
+			HHTInputController controller = loader.getController();
+			controller.setMainApp(this);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -71,6 +74,10 @@ public class MainApp extends Application {
 	 */
 	public void hello() {
 		System.out.println("Hello from MainApp!");
+	}
+	
+	public ObservableList<String> getDisplayData() {
+		return displayData;
 	}
 	
 	/**

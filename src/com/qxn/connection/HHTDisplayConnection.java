@@ -5,45 +5,65 @@ import java.net.*;
 
 import com.qxn.interfaces.Callback;
 
-public class HHTDisplayConnection implements Runnable{
+import javafx.concurrent.Task;
+
+public class HHTDisplayConnection extends Task<Void> implements Runnable{
 	
 		
 	private String ip;
 	private int port;
 	private boolean isAddressSet = false;
+	private String displayStr;
 	
 	private Callback handler;
 	
-	private final int MILISEC_200 = 200;
-	private final int SEC_20 = 20*1000;
-	private final int DISPLAY_BUFFER_SIZE = 1025;
+	private final static int MILISEC_50 = 50;
+	private final static int SEC_20 = 20*1000;
+	private final static int DISPLAY_BUFFER_SIZE = 1024;
 		
 	public void run() {		
 		char[] cbuf = new char[DISPLAY_BUFFER_SIZE];
 		while(true)	{
-			if(isAddressSet) {								
-				Socket clientSocket;
+			if(isAddressSet) {
 				try {
-					clientSocket = new Socket(ip, port);
+					Socket clientSocket = new Socket(ip, port);					
 					//DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
 					BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-					while(true) {
-						try {
-							int byteRead = inFromServer.read(cbuf);
-							if (byteRead > 0) {
-								// TODO: send to HHTInputController to display
-								// on the label								
-								onReceivedDisplayBuffer(cbuf);
-							} else {
-								System.out.println("[DisplayThread] Received nothing from server");
-							}
-						} catch (IOException ioe) {
-							ioe.printStackTrace();
-						} finally {
-							clientSocket.close();
-						}					
-						Thread.sleep(MILISEC_200);	
-					}
+					int byteRead = -1;
+//					do{
+//						try {
+//							System.out.println(inFromServer.readLine());
+//						} catch (Exception ex) {
+//							ex.printStackTrace();
+//							break;
+//						}
+//					}
+//					while (true);
+					do {							
+						byteRead = inFromServer.read(cbuf);
+						if (byteRead > 0) {
+							// TODO: send to HHTInputController to display on the label							// 
+							//onReceivedDisplayBuffer(cbuf);
+							String oldDisplayStr = "";
+							if(displayStr!=null) {
+								oldDisplayStr = displayStr;
+							}							 
+							displayStr = String.valueOf(cbuf);
+							displayStr = displayStr.replaceAll("[0-9];1f", System.getProperty("line.separator"));
+//							displayStr = displayStr.replaceAll("H", " ");
+							displayStr = displayStr.replaceAll("\\[", " ");
+							displayStr = displayStr.replaceAll("1;20H", " ");
+//							displayStr = displayStr.replaceAll("1;20f", " ");
+							displayStr = displayStr.replaceAll("2J", " ");
+							if(!oldDisplayStr.equalsIgnoreCase(displayStr)) {
+								call();
+							}							
+						} else {
+							System.out.println("[DisplayThread] Received nothing from server");
+						}
+						Thread.sleep(MILISEC_50);
+					} while(byteRead>0);
+					clientSocket.close();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -61,6 +81,7 @@ public class HHTDisplayConnection implements Runnable{
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void onReceivedDisplayBuffer(char[] cbuf) {
 		// TODO Auto-generated method stub
 		handler.execute(cbuf);		
@@ -76,5 +97,13 @@ public class HHTDisplayConnection implements Runnable{
 	public void registerCallback(Callback callback) {
 		// TODO Auto-generated method stub
 		this.handler = callback;
+	}
+	
+	@Override
+	protected Void call() throws Exception {
+		// TODO Auto-generated method stub
+		updateMessage(displayStr);
+		System.out.println(displayStr);
+		return null;
 	}
 }

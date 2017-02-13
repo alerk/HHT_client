@@ -1,12 +1,16 @@
 package com.qxn.view;
+
+import java.awt.event.KeyEvent;
+import java.util.Hashtable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 //import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
-//import javafx.scene.control.TextArea;
+import javafx.scene.control.TextArea;
+
 import com.qxn.MainApp;
 import com.qxn.connection.HHTConnection;
-import java.util.Hashtable;
+
 import com.qxn.interfaces.Callback;
 
 public class HHTInputController implements Callback{
@@ -19,6 +23,9 @@ public class HHTInputController implements Callback{
 	
 	@FXML
 	private Label lblDisplay;
+	@FXML
+	private TextArea txtDisplay;
+	private String displayStr;
 	
 	//Reference to MainApp
 	private MainApp mainApp;
@@ -56,6 +63,8 @@ public class HHTInputController implements Callback{
 	@FXML
 	private void initialize() {
 		//Init something here
+//		lblDisplay.textProperty().bind(hhtConn.getDisplayGenerator());	
+		txtDisplay.textProperty().bind(hhtConn.getDisplayGenerator());
 	}
 	
 	/**
@@ -63,8 +72,7 @@ public class HHTInputController implements Callback{
 	 * @param mainApp
 	 */
 	public void setMainApp(MainApp mainApp) {
-		this.mainApp = mainApp;
-		
+		this.mainApp = mainApp;		
 		mainApp.hello();
 	}	
 	
@@ -221,16 +229,24 @@ public class HHTInputController implements Callback{
 		buttonClicked(keyMapTable.get("9"));
 	}	
 	
+	@FXML
+	private void onKeyPressed(KeyEvent key) {
+		buttonClicked(key.getKeyChar());		
+	}
+	
 	private void buttonClicked(char keyCode){
 		//TODO: send to HHTConnection > HHTInputConnection
 		hhtConn.sendKey(keyCode);
 	}
 
-	@Override
+	@Override	
 	public void execute(char[] arr) {
 		// TODO Auto-generated method stub
-		lblDisplay.setText(String.valueOf(arr));
+		//lblDisplay.setText(String.valueOf(arr));
+		displayStr = String.valueOf(arr);
+		displayStr.replaceAll("\033.*?f", "\n");
+		displayStr.replaceAll("\033.*?H", "");		
+		System.out.println("Received text: " + displayStr);
+		//updateDisplayString(displayStr);
 	}
-	
-
 }

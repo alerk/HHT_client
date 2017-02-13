@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+
 public class HHTInputConnection implements Runnable{
 	
 	private String ip;
@@ -26,19 +27,20 @@ public class HHTInputConnection implements Runnable{
 					outToServer.writeByte('0');
 					// BufferedReader inFromServer = new BufferedReader(new
 					// InputStreamReader(clientSocket.getInputStream()));
-					try {
-						// TODO lock the sendBuffer, retrieve all and send to
-						// server
-						char v = sendQueue.take().charValue();
-						outToServer.writeByte((int) v);
-						// TODO: print send ok;
-						System.out.println("Sent " + v + " to server");
-						Thread.sleep(MILISEC_200);	
-					} catch (InterruptedException ie) {
-						ie.printStackTrace();
-					} finally {
-						clientSocket.close();
-					}					
+					do {
+						try {
+							// TODO lock the sendBuffer, retrieve all and send to server 
+							char v = sendQueue.take().charValue();
+							outToServer.writeByte((int) v);
+							// TODO: print send ok;
+							System.out.println("Sent " + v + " to server");
+							Thread.sleep(MILISEC_200);	
+						} catch (InterruptedException ie) {
+							ie.printStackTrace();
+							break;
+						} 					
+					} while (true);	
+					clientSocket.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}							
@@ -46,6 +48,7 @@ public class HHTInputConnection implements Runnable{
 			else {
 				//wait for 20 seconds;
 				try {
+					System.out.println("Waiting for server address");
 					Thread.sleep(SEC_20);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -76,4 +79,6 @@ public class HHTInputConnection implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	
+	
 }
