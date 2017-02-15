@@ -14,6 +14,7 @@ public class HHTInputConnection implements Runnable{
 	private final int MILISEC_200 = 200;
 	private final int SEC_20 = 20*1000;
 //	private final int INPUT_BUFFER_SIZE = 12;
+	private boolean isRequestStop = false;
 	
 	private BlockingQueue<Character> sendQueue = new ArrayBlockingQueue<>(10);
 		
@@ -38,7 +39,10 @@ public class HHTInputConnection implements Runnable{
 						} catch (InterruptedException ie) {
 							ie.printStackTrace();
 							break;
-						} 					
+						} 			
+						if(isRequestStop) {							
+							break;
+						}
 					} while (true);	
 					clientSocket.close();
 				} catch (Exception e) {
@@ -54,7 +58,10 @@ public class HHTInputConnection implements Runnable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}			
+			}
+			if(isRequestStop) {							
+				break;
+			}
 		} 
 	}	
 
@@ -78,6 +85,10 @@ public class HHTInputConnection implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void stopConnection() {
+		// TODO Auto-generated method stub
+		isRequestStop = true;		
 	}
 	
 	

@@ -1,11 +1,13 @@
 package com.qxn.view;
 
-import java.awt.event.KeyEvent;
 import java.util.Hashtable;
+
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 //import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.TextArea;
 
 import com.qxn.MainApp;
@@ -22,10 +24,13 @@ public class HHTInputController implements Callback{
 	private TextField txtDisplayPort;
 	
 	@FXML
-	private Label lblDisplay;
+	private Label lblStatus;
+	
 	@FXML
 	private TextArea txtDisplay;
 	private String displayStr;
+	
+	
 	
 	//Reference to MainApp
 	private MainApp mainApp;
@@ -74,7 +79,27 @@ public class HHTInputController implements Callback{
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;		
 		mainApp.hello();
+		this.mainApp.getPrimaryStage().getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				onKeyPressed(event);
+			}			
+		});
 	}	
+	
+	@FXML
+	private void onKeyPressed(KeyEvent event) {
+		if(event.getText().matches("[0-9]")) {					
+			buttonClicked(keyMapTable.get(event.getText()));
+			lblStatus.setText("Button " + event.getText() + " clicked");
+		}			
+		else if (event.getText().matches("[a-f]")){
+			buttonClicked(keyMapTable.get(event.getText().toUpperCase()));
+			lblStatus.setText("Button " + event.getText().toUpperCase() + " clicked");
+		}
+		System.out.println("Button " + event.getText() + " clicked");
+		event.consume();
+	}
 	
 	@FXML
 	private void onBtnConnectClicked() {
@@ -95,42 +120,49 @@ public class HHTInputController implements Callback{
 	private void onBtnEntClicked() {
 		System.out.println("Ent!");
 		buttonClicked(keyMapTable.get("Ent"));
+		lblStatus.setText("Button Ent clicked");
 	}
 	
 	@FXML
 	private void onBtnClrClicked() {
 		System.out.println("Clr!");
 		buttonClicked(keyMapTable.get("Clr"));
+		lblStatus.setText("Button Clr clicked");
 	}
 	
 	@FXML
 	private void onBtnBackspaceClicked() {
 		System.out.println("Backspace!");
-		buttonClicked(keyMapTable.get("Backspace"));		
+		buttonClicked(keyMapTable.get("Backspace"));	
+		lblStatus.setText("Button Backspace clicked");
 	}
 	
 	@FXML
 	private void onBtnUpClicked() {
 		System.out.println("Up!");
 		buttonClicked(keyMapTable.get("Up"));
+		lblStatus.setText("Button Up clicked");
 	}
 	
 	@FXML
 	private void onBtnDownClicked() {
 		System.out.println("Down!");
 		buttonClicked(keyMapTable.get("Down"));
+		lblStatus.setText("Button Down clicked");
 	}
 	
 	@FXML
 	private void onBtnLeftClicked() {
 		System.out.println("Left!");
 		buttonClicked(keyMapTable.get("Left"));
+		lblStatus.setText("Button Left clicked");
 	}
 	
 	@FXML
 	private void onBtnRightClicked() {
 		System.out.println("Right!");
 		buttonClicked(keyMapTable.get("Right"));
+		lblStatus.setText("Button Right clicked");
 	}
 	
 	@FXML
@@ -228,13 +260,8 @@ public class HHTInputController implements Callback{
 		System.out.println("Nine!");
 		buttonClicked(keyMapTable.get("9"));
 	}	
-	
-	@FXML
-	private void onKeyPressed(KeyEvent key) {
-		buttonClicked(key.getKeyChar());		
-	}
-	
-	private void buttonClicked(char keyCode){
+
+	public void buttonClicked(char keyCode){
 		//TODO: send to HHTConnection > HHTInputConnection
 		hhtConn.sendKey(keyCode);
 	}
@@ -248,5 +275,9 @@ public class HHTInputController implements Callback{
 		displayStr.replaceAll("\033.*?H", "");		
 		System.out.println("Received text: " + displayStr);
 		//updateDisplayString(displayStr);
+	}
+	
+	public void stop() {
+		hhtConn.stopConnection();
 	}
 }

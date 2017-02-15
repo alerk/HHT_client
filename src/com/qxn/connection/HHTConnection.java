@@ -54,4 +54,11 @@ public class HHTConnection {
 		// TODO Auto-generated method stub
 		return this.displayConn.messageProperty();
 	}
+
+	public void stopConnection() {
+		// TODO Auto-generated method stub
+		displayConn.stopConnection();
+		inputConn.stopConnection();
+		
+	}
 }

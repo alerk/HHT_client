@@ -5,9 +5,12 @@ import java.io.IOException;
 import com.qxn.view.HHTInputController;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -42,7 +45,8 @@ public class MainApp extends Application {
 			//Show the scene containing the root layout
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
-			primaryStage.show();			
+			primaryStage.show();	
+			
 		} catch(IOException e) {
 			e.printStackTrace();
 		}		
@@ -63,6 +67,16 @@ public class MainApp extends Application {
 			//Give the controller access to the main app			
 			HHTInputController controller = loader.getController();
 			controller.setMainApp(this);
+			
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {				
+				@Override
+				public void handle(WindowEvent event) {
+					// TODO Auto-generated method stub
+					controller.stop();
+					Platform.exit();
+					System.exit(0);
+				}
+			});
 			
 		} catch (IOException e) {
 			e.printStackTrace();

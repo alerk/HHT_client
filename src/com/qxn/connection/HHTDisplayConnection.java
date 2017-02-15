@@ -14,6 +14,7 @@ public class HHTDisplayConnection extends Task<Void> implements Runnable{
 	private int port;
 	private boolean isAddressSet = false;
 	private String displayStr;
+	private boolean isRequestStop = false;
 	
 	private Callback handler;
 	
@@ -30,15 +31,7 @@ public class HHTDisplayConnection extends Task<Void> implements Runnable{
 					//DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
 					BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 					int byteRead = -1;
-//					do{
-//						try {
-//							System.out.println(inFromServer.readLine());
-//						} catch (Exception ex) {
-//							ex.printStackTrace();
-//							break;
-//						}
-//					}
-//					while (true);
+
 					do {							
 						byteRead = inFromServer.read(cbuf);
 						if (byteRead > 0) {
@@ -49,12 +42,14 @@ public class HHTDisplayConnection extends Task<Void> implements Runnable{
 								oldDisplayStr = displayStr;
 							}							 
 							displayStr = String.valueOf(cbuf);
-							displayStr = displayStr.replaceAll("[0-9];1f", System.getProperty("line.separator"));
-//							displayStr = displayStr.replaceAll("H", " ");
-							displayStr = displayStr.replaceAll("\\[", " ");
-							displayStr = displayStr.replaceAll("1;20H", " ");
-//							displayStr = displayStr.replaceAll("1;20f", " ");
-							displayStr = displayStr.replaceAll("2J", " ");
+							displayStr = displayStr.replaceAll("\\[[0-9];1f", System.getProperty("line.separator"));
+							displayStr = displayStr.replaceAll("\\[[0-9];[0-9]f[0-9]", "");
+							displayStr = displayStr.replaceAll("\\[2;[0-9]f\\s?", "");
+							displayStr = displayStr.replaceAll("[0-9]f1\\s", "");
+							displayStr = displayStr.replaceAll("f1\\s", "");
+							displayStr = displayStr.replaceAll("\\[1;20f", "");
+							displayStr = displayStr.replaceAll("\\[1;20H", "");
+							displayStr = displayStr.replaceAll("\\[2J", "");
 							if(!oldDisplayStr.equalsIgnoreCase(displayStr)) {
 								call();
 							}							
@@ -62,6 +57,9 @@ public class HHTDisplayConnection extends Task<Void> implements Runnable{
 							System.out.println("[DisplayThread] Received nothing from server");
 						}
 						Thread.sleep(MILISEC_50);
+						if(isRequestStop) {							
+							break;
+						}
 					} while(byteRead>0);
 					clientSocket.close();
 				} catch (Exception e) {
@@ -77,7 +75,10 @@ public class HHTDisplayConnection extends Task<Void> implements Runnable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}			
+			}
+			if(isRequestStop) {							
+				break;
+			}
 		}
 	}
 	
@@ -106,4 +107,11 @@ public class HHTDisplayConnection extends Task<Void> implements Runnable{
 		System.out.println(displayStr);
 		return null;
 	}
+	
+	public void stopConnection() {
+		// TODO Auto-generated method stub
+		isRequestStop = true;		
+	}
+	
+	
 }
