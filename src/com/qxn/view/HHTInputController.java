@@ -169,100 +169,116 @@ public class HHTInputController implements Callback{
 	private void onBtnAClicked() {
 		System.out.println("A!");
 		buttonClicked(keyMapTable.get("A"));
+		lblStatus.setText("Button A clicked");
 	}
 	
 	@FXML
 	private void onBtnBClicked() {
 		System.out.println("B!");
 		buttonClicked(keyMapTable.get("B"));
+		lblStatus.setText("Button B clicked");
 	}
 	
 	@FXML
 	private void onBtnCClicked() {
 		System.out.println("C!");
 		buttonClicked(keyMapTable.get("C"));
+		lblStatus.setText("Button C clicked");
 	}
 	
 	@FXML
 	private void onBtnDClicked() {
 		System.out.println("D!");
 		buttonClicked(keyMapTable.get("D"));
+		lblStatus.setText("Button D clicked");
 	}
 	
 	@FXML
 	private void onBtnEClicked() {
 		System.out.println("E!");
 		buttonClicked(keyMapTable.get("E"));
+		lblStatus.setText("Button E clicked");
 	}
 	
 	@FXML
 	private void onBtnFClicked() {
 		System.out.println("F!");
 		buttonClicked(keyMapTable.get("F"));
+		lblStatus.setText("Button F clicked");
 	}
 	
 	@FXML
 	private void onBtnZeroClicked() {
 		System.out.println("Zero!");
 		buttonClicked(keyMapTable.get("0"));
+		lblStatus.setText("Button 0 clicked");
 	}
 	
 	@FXML
 	private void onBtnOneClicked() {
 		System.out.println("One!");
 		buttonClicked(keyMapTable.get("1"));
+		lblStatus.setText("Button 1 clicked");
 	}
 	
 	@FXML
 	private void onBtnTwoClicked() {
 		System.out.println("Two!");
 		buttonClicked(keyMapTable.get("2"));
+		lblStatus.setText("Button 2 clicked");
 	}
 	
 	@FXML
 	private void onBtnThreeClicked() {
 		System.out.println("Three!");
 		buttonClicked(keyMapTable.get("3"));
+		lblStatus.setText("Button 3 clicked");
 	}
 	
 	@FXML
 	private void onBtnFourClicked() {
 		System.out.println("Four!");
 		buttonClicked(keyMapTable.get("4"));
+		lblStatus.setText("Button 4 clicked");
 	}
 	
 	@FXML
 	private void onBtnFiveClicked() {
 		System.out.println("Five!");
 		buttonClicked(keyMapTable.get("5"));
+		lblStatus.setText("Button 5 clicked");
 	}
 	
 	@FXML
 	private void onBtnSixClicked() {
 		System.out.println("Six!");
 		buttonClicked(keyMapTable.get("6"));
+		lblStatus.setText("Button 6 clicked");
 	}
 	
 	@FXML
 	private void onBtnSevenClicked() {
 		System.out.println("Seven!");
 		buttonClicked(keyMapTable.get("7"));
+		lblStatus.setText("Button 7 clicked");
 	}
 	
 	@FXML
 	private void onBtnEightClicked() {
 		System.out.println("Eight!");
 		buttonClicked(keyMapTable.get("8"));
+		lblStatus.setText("Button 8 clicked");
 	}
 	
 	@FXML
 	private void onBtnNineClicked() {
 		System.out.println("Nine!");
 		buttonClicked(keyMapTable.get("9"));
+		lblStatus.setText("Button 9 clicked");
 	}	
 
 	public void buttonClicked(char keyCode){
-		//TODO: send to HHTConnection > HHTInputConnection
+		//TODO: send to HHTConnection > HHTInputConnection		
 		hhtConn.sendKey(keyCode);
 	}
 

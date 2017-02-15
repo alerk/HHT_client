@@ -47,6 +47,7 @@ public class HHTDisplayConnection extends Task<Void> implements Runnable{
 							displayStr = displayStr.replaceAll("\\[2;[0-9]f\\s?", "");
 							displayStr = displayStr.replaceAll("[0-9]f1\\s", "");
 							displayStr = displayStr.replaceAll("f1\\s", "");
+							displayStr = displayStr.replaceAll("\\[[1-8];[1-8][0-9]f", "");
 							displayStr = displayStr.replaceAll("\\[1;20f", "");
 							displayStr = displayStr.replaceAll("\\[1;20H", "");
 							displayStr = displayStr.replaceAll("\\[2J", "");
